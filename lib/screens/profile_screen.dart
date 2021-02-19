@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     userProfile = await UserService.getProfile(userId);
 
 
-    print(userProfile.profile_image);
+   // print(userProfile.profile_image);
     isLoading = false;
     setState(() {
     });
@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('${userProfile.user_name}' , style: TextStyle(fontSize: 16.0 , ),),
+            Text((userProfile==null) ? '' : '${userProfile.user_name}' , style: TextStyle(fontSize: 16.0 , ),),
             SizedBox(height: 10.0,),
             Text('${userProfile.mobile}' , style: TextStyle(color: Colors.grey),),
             SizedBox(height: 20.0,),
@@ -216,39 +216,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            Divider(height: 10.0,color: Colors.grey,),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical : 5.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.location_city, color: Color.fromRGBO(7, 116, 78 ,  1),),
-                  SizedBox(width: 15.0,),
-                  Text('${userProfile.city}' , style: TextStyle(fontSize: 16.0),),
-                ],
-              ),
-            ),
-            Divider(height: 10.0,color: Colors.grey,),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical : 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.payment, color: Color.fromRGBO(7, 116, 78 ,  1),),
-                      SizedBox(width: 15.0,),
-                      Text('${userProfile.pincode}' , style: TextStyle(fontSize: 16.0),),
-                    ],
-                  ),
-                  GestureDetector(
-                      onTap: (){
-                        updateProfile("pincode");
-                      },
-                      child: Icon(Icons.edit))
-                ],
-              ),
-            ),
-            Divider(height: 10.0,color: Colors.grey,),
+            // Divider(height: 10.0,color: Colors.grey,),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical : 5.0),
+            //   child: Row(
+            //     children: <Widget>[
+            //       Icon(Icons.location_city, color: Color.fromRGBO(7, 116, 78 ,  1),),
+            //       SizedBox(width: 15.0,),
+            //       Text('${userProfile.city}' , style: TextStyle(fontSize: 16.0),),
+            //     ],
+            //   ),
+            // ),
+            // Divider(height: 10.0,color: Colors.grey,),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical : 5.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Row(
+            //         children: <Widget>[
+            //           Icon(Icons.payment, color: Color.fromRGBO(7, 116, 78 ,  1),),
+            //           SizedBox(width: 15.0,),
+            //           Text('${userProfile.pincode}' , style: TextStyle(fontSize: 16.0),),
+            //         ],
+            //       ),
+            //       GestureDetector(
+            //           onTap: (){
+            //             updateProfile("pincode");
+            //           },
+            //           child: Icon(Icons.edit))
+            //     ],
+            //   ),
+            // ),
+            // Divider(height: 10.0,color: Colors.grey,),
           ],
         ),
       ),

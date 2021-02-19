@@ -15,6 +15,7 @@ class CartService
       "token" : TOKEN
     });
 
+    print(res);
     if(res["status"]=="1" && res["data"]!=null)
     {
       List<CartModel> cartList = CartModel.fromJSONList(res["data"]);
@@ -27,6 +28,8 @@ class CartService
 
   static saveCart(String userId , String prodId , String quantity , String prodPrice) async
   {
+
+    print("++++++++++++"+quantity);
     var response = await RequestHandler.GET(ApiConstants.ADD_CART , {
       "user_sr" : userId,
       "prod_id" : prodId,
@@ -34,6 +37,7 @@ class CartService
       "prod_price" : prodPrice,
       "token" : TOKEN
     });
+    print("++++++++++++"+response.toString());
 
     if(response["status"]=="1")
     {
@@ -68,6 +72,7 @@ class CartService
       "token" : TOKEN
     });
 
+    print(response);
     if(response["status"]=="1")
     {
       return true;

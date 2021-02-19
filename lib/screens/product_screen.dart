@@ -283,6 +283,8 @@ class _ProductScreenState extends State<ProductScreen> {
             SizedBox(height: 10,),
             (addToCartList[index] == true) ? GestureDetector(
               onTap: () async {
+
+                print(productItem.sale_price);
                 await saveToCart(productItem.prod_id , productItem.prod_code , "1" , productItem.sale_price);
 
                 addToCartList[index] =  false;
@@ -349,13 +351,18 @@ class _ProductScreenState extends State<ProductScreen> {
       children: [
         GestureDetector(
           onTap: (){
+
+            if(!isAddingToCart){
               if(quantityItemList[index] > 1)
               {
-              quantityItemList[index]--;
-              saveToCart(cartItem.prod_id , cartItem.prod_code , quantityItemList[index].toString() , cartItem.sale_price);
-              setState(() {
-              });
+                quantityItemList[index]--;
+                saveToCart(cartItem.prod_id , cartItem.prod_code , "-1" , cartItem.sale_price);
+                setState(() {
+                });
               }
+            }
+
+
           },
           child: Container(
             padding: const EdgeInsets.all(0),
@@ -375,10 +382,13 @@ class _ProductScreenState extends State<ProductScreen> {
         GestureDetector(
           onTap: (){
 
+            if(!isAddingToCart){
               quantityItemList[index]++;
-              saveToCart(cartItem.prod_id , cartItem.prod_code , quantityItemList[index].toString() , cartItem.sale_price);
+              saveToCart(cartItem.prod_id , cartItem.prod_code , "1" , cartItem.sale_price);
               setState(() {
               });
+            }
+
 
           },
           child: Container(

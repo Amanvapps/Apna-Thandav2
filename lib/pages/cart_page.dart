@@ -38,6 +38,7 @@ class _CartPageState extends State<CartPage> {
   bool isDeletingCart = false;
   double deliveryCharge = 0.0 , cartTotal = 0.0 , totalAmount=0.0 ;
 
+  bool isUpdating = false;
   var grandTotal = 0.0 , itemCount = 0;
 
   List<int> quantityItemList = [];
@@ -62,9 +63,11 @@ class _CartPageState extends State<CartPage> {
 
 getCart() async
 {
-  itemCount = 0;
-  grandTotal = 0;
 
+
+  itemCount = 0;
+
+  print("here-----");
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userId = prefs.getString('userId');
   if(!EmptyValidation.isEmpty(userId))
@@ -74,6 +77,7 @@ getCart() async
     deliveryCharge=0.0;
     cartTotal = 0.0;
     totalAmount = 0.0;
+    grandTotal=0;
 
     if(quantityItemList.length>0)
       quantityItemList.clear();
@@ -94,7 +98,7 @@ getCart() async
 
       cartList.forEach((element) {
         itemCount = itemCount + int.parse(element.quantity);
-        cartTotal = cartTotal + (int.parse(element.quantity) * double.parse(element.prod_price));
+        cartTotal = cartTotal + double.parse(element.prod_price);
       });
 
       grandTotal = cartTotal;
@@ -212,6 +216,9 @@ getCart() async
 
   itemDetails(CartModel cartItem , index)
   {
+
+    print(quantityItemList[index]);
+
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -265,7 +272,7 @@ getCart() async
                 Text.rich(TextSpan(
                   children: <TextSpan>[
                     new TextSpan(
-                      text: "\u{20B9} "  + cartItem.real_price,
+                      text: "\u{20B9} "  + (cartItem.real_price),
                       style: new TextStyle(
                         color: Colors.black,
                         decoration: TextDecoration.lineThrough,
@@ -293,7 +300,7 @@ getCart() async
     );
   }
 
-  quantityButtons(cartItem , index)
+  quantityButtons(CartModel cartItem , index)
   {
     return Align(
       alignment: Alignment.bottomRight,
@@ -302,23 +309,46 @@ getCart() async
         children: [
           GestureDetector(
             onTap: () async {
-              if(quantityItemList[index] > 1)
+
+              if(!isDeletingCart){
+                if(quantityItemList[index] > 1)
                 {
+
+                  // cartItem.prod_price = (double.parse(cartItem.prod_price) - (double.parse(cartItem.prod_price)/quantityItemList[index])).toString();
                   quantityItemList[index]--;
                   itemCount--;
-                  grandTotal = grandTotal - double.parse(cartList[index].prod_price);
 
+                  //grandTotal = grandTotal - double.parse(cartItem.prod_price);
                   cartTotal = 0.0;
                   for(int i=0 ; i<cartList.length ; i++){
-                    cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
+                    cartTotal = cartTotal - (quantityItemList[i] * double.parse(cartList[i].prod_price));
                   };
 
                   totalAmount = cartTotal + deliveryCharge;
-
                   setState(() {
                   });
+
+                  await updateMyCart();
+                  // setState(()
+
+
+                  // quantityItemList[index]--;
+                  // itemCount--;
+                  // grandTotal = grandTotal - double.parse(cartList[index].prod_price);
+                  //
+                  // cartTotal = 0.0;
+                  // for(int i=0 ; i<cartList.length ; i++){
+                  //   cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
+                  // };
+                  //
+                  // totalAmount = cartTotal + deliveryCharge;
+                  //
+                  // setState(() {
+                  // });
+                  //
+                  // await updateMyCart();
                 }
-              else if(quantityItemList[index] == 1)
+                else if(quantityItemList[index] == 1)
                 {
 
                   // if 0 then delete from cart
@@ -349,26 +379,29 @@ getCart() async
 
                   }
                   else
-                    {
-                      quantityItemList[index] = 1;
+                  {
+                    quantityItemList[index] = 1;
 
-                      cartTotal = 0.0;
-                      for(int i=0 ; i<cartList.length ; i++){
-                        cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
-                      };
+                    cartTotal = 0.0;
+                    for(int i=0 ; i<cartList.length ; i++){
+                      cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
+                    };
 
-                      totalAmount = cartTotal + deliveryCharge;
+                    totalAmount = cartTotal + deliveryCharge;
 
 
-                      setState(() {
-                      });
-                    }
+                    setState(() {
+                    });
+                  }
 
                   isDeletingCart = false;
                   setState(() {});
 
                 }
-            },
+
+              }
+
+                     },
             child: Container(
               padding: const EdgeInsets.all(5),
               alignment: Alignment.center,
@@ -387,21 +420,30 @@ getCart() async
                 child: Text(quantityItemList[index].toString() , style: TextStyle(fontSize: 17 , fontWeight: FontWeight.normal),)),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () async {
 //              if(quantityItemList[index] < 5)
 //              {
-                quantityItemList[index]++;
-                itemCount++;
-                grandTotal = grandTotal + double.parse(cartList[index].prod_price);
-                cartTotal = 0.0;
-                for(int i=0 ; i<cartList.length ; i++){
-                  cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
-                };
 
-                totalAmount = cartTotal + deliveryCharge;
+              // cartItem.prod_price = (double.parse(cartItem.prod_price) + (double.parse(cartItem.prod_price)/quantityItemList[index])).toString();
 
-                setState(() {
-                });
+           if(!isDeletingCart){
+             quantityItemList[index]++;
+             itemCount++;
+
+            // grandTotal = grandTotal + double.parse(cartItem.prod_price);
+             cartTotal = 0.0;
+             for(int i=0 ; i<cartList.length ; i++){
+               cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
+             };
+
+             totalAmount = cartTotal + deliveryCharge;
+             setState(() {
+             });
+
+             await updateMyCart();
+           }
+                // setState(() {
+                // });
 //              }
             },
             child: Container(
@@ -599,6 +641,45 @@ getCart() async
           });
   }
 
+  updateMyCart() async {
+
+    isDeletingCart = true;
+    setState(() {
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId');
+    if (!EmptyValidation.isEmpty(userId)) {
+      List updatedCartList = [];
+
+      // isLoading = true;
+      // setState(() {
+      // });
+      for (int i = 0; i < cartList.length; i++) {
+        var product = {
+          "user_id": userId.toString(),
+          "prod_sr": cartList[i].prod_id.toString(),
+          "qty": quantityItemList[i].toString(),
+        };
+
+
+        updatedCartList.add(product);
+      }
+
+
+      bool res = await CartService.updateCart(
+          userId, json.encode(updatedCartList));
+
+      await getCart();
+
+
+      isDeletingCart = false;
+      setState(() {
+      });
+
+
+    }
+  }
+
    updateCart() async
    {
      SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -617,10 +698,8 @@ getCart() async
            "user_id" : userId.toString(),
            "prod_sr" : cartList[i].prod_id.toString(),
            "qty" : quantityItemList[i].toString(),
-           "sale_price" : cartList[i].prod_price.toString(),
+           // "sale_price" : cartList[i].prod_price,
          };
-
-
 
          updatedCartList.add(product);
        }
@@ -631,7 +710,9 @@ getCart() async
        if(res == true)
          {
 //          deleteCash(userId );
-
+         isDeletingCart = false;
+         setState(() {
+         });
          var r = await Navigator.push(
            context,
            MaterialPageRoute(builder: (context) => UpdatedCartScreen("cod" , DateFormat("yyyy-MM-dd").parse(widget.date.toString()).toString() , widget.mainCtx)),

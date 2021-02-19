@@ -9,11 +9,14 @@ class UserService
 
   static getProfile(userId) async
   {
+    print(userId);
     var res = await RequestHandler.GET(ApiConstants.USER_PROFILE , {
-      "user_sr" : userId,
+      "user_id" : userId,
       "token" : TOKEN
     });
 
+
+    print(res);
     if(res["status"]=="1" && res["data"]!=null)
     {
       User user = User(res["data"][0]);

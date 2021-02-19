@@ -110,7 +110,7 @@ class _UpdatedCartScreenState extends State<UpdatedCartScreen> {
           if(!EmptyValidation.isEmpty(element.ship_charge))
           deliveryCharge = deliveryCharge + (int.parse(element.quantity) * int.parse(element.ship_charge));
 
-          cartTotal = cartTotal + (int.parse(element.quantity) * double.parse(element.prod_price));
+          cartTotal = cartTotal +double.parse(element.prod_price);
         });
 
         totalAmount = cartTotal + deliveryCharge;
