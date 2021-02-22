@@ -4,6 +4,7 @@ import 'package:ecommerceapp/screens/login_screen.dart';
 import 'package:ecommerceapp/screens/main_screen.dart';
 import 'package:ecommerceapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -46,12 +47,27 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     else
     {
+      await getBlock();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String userName = prefs.getString('userName');
       String email = prefs.getString('userEmailId');
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => MainScreen(userName , email , "no")));
+    }
+
+  }
+
+  Future getBlock() async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId= prefs.getString('userId');
+    bool isBlocked = await AuthService.isBlocked(userId);
+
+    if(isBlocked){
+      Fluttertoast.showToast(msg: "User blocked!");
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //     builder: (BuildContext context) => MainScreen(userName , email , "no")));
     }
 
   }

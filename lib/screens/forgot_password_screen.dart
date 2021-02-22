@@ -68,13 +68,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 border: Border.all(color: Colors.blueGrey , width: 2)
             ),
             child: TextField(
+              keyboardType: TextInputType.number,
               controller: phoneController,
               style: TextStyle(
                 fontSize: 16.0,
               ),
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 10),
-                  hintText: "Email",
+                  hintText: "Phone number",
                   border: InputBorder.none
               ),
             ),
@@ -97,7 +98,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           bool result = await AuthService.resetPassword(phoneController.text);
                                           if(result == true)
                                           {
-                                            Fluttertoast.showToast(msg: "Reset email has been sent to your email id" , backgroundColor: Colors.black , textColor: Colors.white);
+                                            Fluttertoast.showToast(msg: "Password has been sent to your phone number" , backgroundColor: Colors.black , textColor: Colors.white);
                                           }
                                           else
                                             {
@@ -107,8 +108,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           isLoading = false;
                                           setState(() {
                                           });
-
-
 
                                     }
 

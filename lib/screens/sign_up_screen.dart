@@ -14,9 +14,12 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
 
   TextEditingController emailController , passwordController , nameController , phoneController
-  , addressController;
+  , addressController , otpController;
+  var otp="";
 
   bool isLoading = false;
+  bool sendOtp=true;
+  bool isOtpVerified = false;
 
   @override
   void initState() {
@@ -26,7 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
     passwordController = TextEditingController();
     nameController = TextEditingController();
     phoneController = TextEditingController();
-    //cityController = TextEditingController();
+    otpController = TextEditingController();
    // stateController = TextEditingController();
     addressController = TextEditingController();
    // pincodeController = TextEditingController();
@@ -220,50 +223,48 @@ class _SignupScreenState extends State<SignupScreen> {
                  ),
                ),
                SizedBox(height: 20,),
-               // Container(
-               //   padding: EdgeInsets.only(left: 5 , right: 5 , bottom: 5),
-               //   alignment: Alignment.center,
-               //   height: 60,
-               //   decoration: BoxDecoration(
-               //       borderRadius: BorderRadius.circular(7),
-               //       border: Border.all(color: Colors.blueGrey , width: 2)
-               //   ),
-               //   child: TextField(
-               //     keyboardType: TextInputType.number,
-               //     controller: pincodeController,
-               //     style: TextStyle(
-               //       fontSize: 16.0,
-               //     ),
-               //     decoration: InputDecoration(
-               //         contentPadding: EdgeInsets.only(left: 10),
-               //         hintText: "Pincode",
-               //         border: InputBorder.none
-               //     ),
-               //   ),
-               // ),
-               // SizedBox(height: 20,),
-               // Container(
-               //   padding: EdgeInsets.only(left: 5 , right: 5 , bottom: 5),
-               //   alignment: Alignment.center,
-               //   height: 60,
-               //   decoration: BoxDecoration(
-               //       borderRadius: BorderRadius.circular(7),
-               //       border: Border.all(color: Colors.blueGrey , width: 2)
-               //   ),
-               //   child: TextField(
-               //     controller: landmarkController,
-               //     style: TextStyle(
-               //       fontSize: 16.0,
-               //     ),
-               //     decoration: InputDecoration(
-               //         contentPadding: EdgeInsets.only(left: 10),
-               //         hintText: "Landmark",
-               //         border: InputBorder.none
-               //     ),
-               //   ),
-               // ),
-
-
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 5 , right: 5 , bottom: 5),
+                        alignment: Alignment.center,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            border: Border.all(color: Colors.blueGrey , width: 2)
+                        ),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: otpController,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 10),
+                              hintText: "Verification Code",
+                              border: InputBorder.none
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                       if(!isOtpVerified)
+                        await sendCode();
+                      },
+                      child: Container(
+                          margin: const EdgeInsets.all(10),
+                          child: (!isOtpVerified) ?
+                          Text((!sendOtp) ? 'Resend OTP': 'Send OTP' , style: TextStyle(fontWeight: FontWeight.bold),) :
+                         Icon(Icons.done , color: Colors.green,)
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 20,),
+                (isOtpVerified) ? Text('OTP sent to mobile' , style: TextStyle(fontSize: 15 , color: Colors.green),)
+                    : Container()
               ],
             ),
           ),
@@ -282,41 +283,53 @@ class _SignupScreenState extends State<SignupScreen> {
 //                                      String landmark = landmarkController.text;
 
 
-                                      if(pass!="" && name!="" && phone!="" && address!="") {
+                                      if(isOtpVerified){
+                                        if(pass!="" && name!="" && phone!="" && address!="" && otpController.text!="") {
 
 
-                                        isLoading = true;
-                                        setState(() {
+                                          if(otp == otpController.text){
 
-                                        });
+                                            isLoading = true;
+                                            setState(() {
 
-                                        var res =  await AuthService.register(
-                                            email,
-                                            name,
-                                            phone,
-                                            pass,
-                                            address);
+                                            });
 
-                                       if(res!=null)
-                                         {
-                                           Fluttertoast.showToast(msg: "Successfully signed up !" , textColor: Colors.white , backgroundColor: Colors.black);
-                                           Navigator.pushReplacement(
-                                             context,
-                                             MaterialPageRoute(builder: (context) => LoginScreen()),
-                                           );
-                                         }
+                                            var res =  await AuthService.register(
+                                                email,
+                                                name,
+                                                phone,
+                                                pass,
+                                                address);
+
+                                            if(res!=null)
+                                            {
+                                              Fluttertoast.showToast(msg: "Successfully signed up !" , textColor: Colors.white , backgroundColor: Colors.black);
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => LoginScreen()),
+                                              );
+                                            }
 
 
-                                       isLoading = false;
-                                       setState(() {
+                                            isLoading = false;
+                                            setState(() {
 
-                                       });
+                                            });
+                                          }
+                                          else{
+                                            Fluttertoast.showToast(msg: 'OTP not verified!' , textColor: Colors.white , backgroundColor: Colors.black);
+                                          }
 
-                                      }
-                                      else
+                                        }
+                                        else
                                         {
                                           Fluttertoast.showToast(msg: 'Empty Fields!' , textColor: Colors.white , backgroundColor: Colors.black);
                                         }
+                                      }
+                                      else
+                                      {
+                                        Fluttertoast.showToast(msg: 'Please verify mobile number!' , textColor: Colors.white , backgroundColor: Colors.black);
+                                      }
 
             },
             child: Container(
@@ -352,4 +365,26 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+
+  sendCode() async{
+
+
+      if(phoneController.text!=""){
+        var response = await AuthService.requestOtp(phoneController.text);
+        if(response!=null){
+          otp = response.toString();
+          isOtpVerified = true;
+        }
+        setState(() {
+          sendOtp = false;
+        });
+      }
+      else{
+        Fluttertoast.showToast(msg: "Please enter phone number!");
+      }
+
+
+
+  }
+
 }

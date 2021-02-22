@@ -1,4 +1,0 @@
-#Thu Feb 04 22:35:57 IST 2021
-base.0=/home/aman/Desktop/desktop data/flutter projects/drinks app/build/app/intermediates/transforms/r8/release/0/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex

@@ -31,5 +31,8 @@ class ApiConstants
   static const String VILLAGES = "del_village_list.php";
   static const String SEARCH = "searchAPI.php";
   static const String ABOUT = "aboutus.php";
+  static const String REQUEST_OTP = "request_otp.php";
+  static const String SEND_PASSWORD = "sendPassword.php";
+  static const String CHECK_BLOCK = "check_block.php";
 
 }

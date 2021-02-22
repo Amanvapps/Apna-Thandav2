@@ -21,12 +21,19 @@ class AuthService
       'pass': password,
     });
 
+    print("+++++++" + response.toString());
     if(response["status"]=="1" && response["data"]!=null)
       {
         User user = User(response["data"][0]);
         await saveToken(user);
-        Fluttertoast.showToast(msg: "Login successful" , textColor: Colors.white , backgroundColor: Colors.black);
-        return true;
+        if(user.block_status=="1"){
+          Fluttertoast.showToast(msg: "User blocked!" , textColor: Colors.white , backgroundColor: Colors.black);
+          return false;
+        }
+       else{
+          Fluttertoast.showToast(msg: "Login successful" , textColor: Colors.white , backgroundColor: Colors.black);
+          return true;
+        }
       }
     Fluttertoast.showToast(msg: "Invalid Credentials !" , textColor: Colors.white , backgroundColor: Colors.black);
     return false;
@@ -117,15 +124,56 @@ class AuthService
 
   static resetPassword(String email) async
   {
-    var response = await RequestHandler.GET(ApiConstants.RESET_PASSWORD , {
+    print(email);
+    var response = await RequestHandler.GET(ApiConstants.SEND_PASSWORD , {
       "token" : TOKEN,
-      "email_id" : email
+      "mobb" : email
     });
+
+   // print(response);
 
     if(response["status"] == "1")
     return true;
     else
       return false;
+  }
+
+
+  static requestOtp(mobb) async{
+    print(mobb);
+    var response = await RequestHandler.GET(ApiConstants.REQUEST_OTP , {
+      "token" : TOKEN,
+      "mobb" : mobb
+    });
+
+    // print(response.toString());
+
+    if(response["status"] == "4"){
+      Fluttertoast.showToast(msg: "User already exist!");
+      return null;
+    }
+    else if(response["status"] == "0"){
+      Fluttertoast.showToast(msg: "Technical error, please try again!");
+      return null;
+    }
+    else if(response["status"] == "1"){
+      return response["data"][0]["otp_value"];
+    }
+
+  }
+
+  static isBlocked(userId) async{
+    var res = await RequestHandler.GET(ApiConstants.CHECK_BLOCK , {
+      "token" : TOKEN ,
+      "user_sr" : userId
+    });
+
+    if(res["status"]=="1"){
+      if(res["data"][0]["block_status"] == "0"){
+        return false;
+      }
+    }
+    return true;
   }
 
 

@@ -17,6 +17,7 @@ class User
   String pageDirected;
   String apiKey;
   String apiToken;
+  String block_status;
 
 
   User(obj)
@@ -39,6 +40,7 @@ class User
     this.landmark = obj["landmark"];
     this.cart_items = obj["cart_items"];
     this.wishlist_items = obj["wishlist_items"];
+    this.block_status = obj["block_status"];
   }
 
 
