@@ -27,6 +27,8 @@ class CategoryService
     var response = await RequestHandler.GET(ApiConstants.NEW_HOME , {
       "token" : TOKEN
     });
+
+    print(response);
     if(response["status"]=="1" && response["cat"]!=null)
     {
       List<HomeCategories> mainList = HomeCategories.fromJSONList(response["cat"]);

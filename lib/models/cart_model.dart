@@ -9,6 +9,7 @@ class CartModel
   String prod_code;
   String manufacturer;
   String prod_desc;
+  String stock_qty;
   String image;
   String ship_charge;
   String ship_type;
@@ -16,6 +17,7 @@ class CartModel
 
   CartModel(obj)
   {
+    this.stock_qty = obj["stock_qty"];
     this.user_sr = obj["user_sr"];
     this.prod_id = obj["prod_id"];
     this.quantity = obj["qty"];

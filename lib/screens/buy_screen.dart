@@ -430,17 +430,25 @@ class _BuyScreenState extends State<BuyScreen> {
         ),
         GestureDetector(
           onTap: (){
-//            if(widget.quantity < 5)
-//            {
-              widget.quantity++;
-              discountPercentage = ((double.parse(widget.productItem.real_price) - double.parse(widget.productItem.sale_price))/double.parse(widget.productItem.real_price)) * 100;
-              deliveryCharge = double.parse(widget.productItem.ship_charge) * widget.quantity;
+            if(int.parse(cartItem.quantity)>widget.quantity) {
+              {
+                widget.quantity++;
+                discountPercentage =
+                    ((double.parse(widget.productItem.real_price) -
+                        double.parse(widget.productItem.sale_price)) /
+                        double.parse(widget.productItem.real_price)) * 100;
+                deliveryCharge = double.parse(widget.productItem.ship_charge) *
+                    widget.quantity;
 
-              totalAmount = (double.parse(widget.productItem.sale_price) * widget.quantity) + deliveryCharge;
+                totalAmount = (double.parse(widget.productItem.sale_price) *
+                    widget.quantity) + deliveryCharge;
 
-              setState(() {
-              });
-//            }
+                setState(() {});
+              }
+            }
+            else{
+              Fluttertoast.showToast(msg: "No more stock available!");
+            }
           },
           child: Container(
             padding: const EdgeInsets.all(0),

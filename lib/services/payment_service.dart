@@ -75,6 +75,8 @@ class PaymentService
 
   static setPayment(userId , name , phone , email , productName , address , shipCharge , couponApplied , couponCode, deliveryDate) async
   {
+
+    // print("here-------------");
     var response = await RequestHandler.GET(ApiConstants.CASH_PAYMENT ,
         {
           "user_sr" : userId,
@@ -91,6 +93,7 @@ class PaymentService
         });
 
 
+    // print("))))))))))))))))))))" + response.toString());
 
     if(response["status"]=="1")
       return true;

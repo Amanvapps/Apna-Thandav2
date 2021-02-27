@@ -177,7 +177,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget itemCard(ProductModel productItem , int index)
   {
-    return Container(
+    return (int.parse(productItem.quantity) > 0) ? Container(
       margin: const EdgeInsets.only(top : 5, left: 5 , right: 5 , bottom: 15),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -202,7 +202,7 @@ class _ProductScreenState extends State<ProductScreen> {
              itemDetails(productItem , index)
         ],
       ),
-    );
+    ) : Container();
   }
 
   itemDetails(ProductModel productItem , int index)
@@ -382,11 +382,16 @@ class _ProductScreenState extends State<ProductScreen> {
         GestureDetector(
           onTap: (){
 
-            if(!isAddingToCart){
-              quantityItemList[index]++;
-              saveToCart(cartItem.prod_id , cartItem.prod_code , "1" , cartItem.sale_price);
-              setState(() {
-              });
+            if(int.parse(cartItem.quantity)>quantityItemList[index]) {
+              if (!isAddingToCart) {
+                quantityItemList[index]++;
+                saveToCart(cartItem.prod_id, cartItem.prod_code, "1",
+                    cartItem.sale_price);
+                setState(() {});
+              }
+            }
+            else{
+              Fluttertoast.showToast(msg: "No more stock available!");
             }
 
 

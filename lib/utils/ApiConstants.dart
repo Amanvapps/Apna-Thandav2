@@ -34,5 +34,6 @@ class ApiConstants
   static const String REQUEST_OTP = "request_otp.php";
   static const String SEND_PASSWORD = "sendPassword.php";
   static const String CHECK_BLOCK = "check_block.php";
+  static const String ALERT = "alert_products.php";
 
 }

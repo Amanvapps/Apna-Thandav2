@@ -3,9 +3,12 @@ import 'package:ecommerceapp/pages/category_page.dart';
 import 'package:ecommerceapp/pages/search_page.dart';
 import 'package:ecommerceapp/pages/transaction_history_page.dart';
 import 'package:ecommerceapp/pages/wishlist_page.dart';
+import 'package:ecommerceapp/screens/alert_screen.dart';
+import 'package:ecommerceapp/services/product_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
 
@@ -19,11 +22,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
+
+  bool isAlert = false;
   CategoryPage categoryPage;
   WishlistPage wishlistPage;
   TransactionHistoryPage transactionHistoryPage;
   CartPage cartPage;
   SearchPage searchPage;
+  AlertScreen alertScreen;
 
   int currentTabIndex = 0;
   List<Widget> pages;
@@ -39,9 +45,10 @@ class _MainScreenState extends State<MainScreen> {
       searchPage = SearchPage(context , widget.username , widget.email);
       transactionHistoryPage = TransactionHistoryPage(context , widget.username , widget.email);
       cartPage = CartPage(context , widget.username , widget.email , DateTime.now());
+      alertScreen = AlertScreen(context, widget.username, widget.email);
 
 
-      pages = [categoryPage , wishlistPage , searchPage , cartPage  , transactionHistoryPage];
+      pages = [categoryPage , wishlistPage , searchPage , cartPage  , transactionHistoryPage , alertScreen];
       if(widget.type == "history"){
         currentPage = transactionHistoryPage;
         currentTabIndex = 4;
@@ -52,6 +59,17 @@ class _MainScreenState extends State<MainScreen> {
       }
       else
       currentPage = categoryPage;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userId = prefs.getString('userId');
+
+
+      var res = await ProductService.getProductAlert(userId);
+      if(res!=null){
+        isAlert = true;
+        setState(() {
+        });
+      }
 
     })()
 
@@ -68,6 +86,9 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {
             currentTabIndex = index;
             currentPage = pages[index];
+            if(currentTabIndex == 5){
+                isAlert = false;
+            }
           });
         },
         currentIndex: currentTabIndex,
@@ -94,6 +115,23 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: (isAlert) ? Container(
+                child: Stack(
+                children: [
+                 Icon(Icons.notifications),
+                   Container(
+                  height: 10,
+                  width: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.redAccent
+                  ),
+                )
+              ],
+            )) :   Icon(Icons.notifications),
+            label: 'Alert',
           ),
         ],
       ),

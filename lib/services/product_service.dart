@@ -32,6 +32,7 @@ class ProductService
     });
 
 
+    print(response);
 
     if(response["status"]=="1" && response["data"]!=null)
     {
@@ -41,5 +42,21 @@ class ProductService
     else
       return null;
 
+  }
+
+
+  static getProductAlert(user_sr)async{
+    // print(user_sr);
+    // print(ApiConstants.URL + ApiConstants.ALERT);
+    var response = await RequestHandler.GET(ApiConstants.ALERT , {
+      "token" : "9306488494",
+      "user_sr" : user_sr
+    });
+    // print("alert------" +  response.toString());
+    if(response["status"] == "1"){
+      List<ProductModel> alertModel = ProductModel.fromJSONList(response["data"]);
+      return alertModel;
+    }
+    return null;
   }
 }

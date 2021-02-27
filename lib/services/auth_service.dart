@@ -16,11 +16,13 @@ class AuthService
 
   static Future<bool> login(String phone, String password) async {
 
+    print("_-----------");
     var response = await RequestHandler.POSTQUERY(ApiConstants.LOGIN, {
       'mobb': phone,
       'pass': password,
     });
 
+    print("++++++++++++++++++++++++++");
     print("+++++++" + response.toString());
     if(response["status"]=="1" && response["data"]!=null)
       {
@@ -146,7 +148,7 @@ class AuthService
       "mobb" : mobb
     });
 
-    // print(response.toString());
+    print(response.toString());
 
     if(response["status"] == "4"){
       Fluttertoast.showToast(msg: "User already exist!");

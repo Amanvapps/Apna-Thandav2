@@ -287,6 +287,8 @@ getCart() async
               ],
             ),
             SizedBox(height: 5,),
+            // Text("Stock : ${cartItem.stock_qty}" , style: TextStyle(color : Colors.black , fontWeight: FontWeight.normal),),
+            // SizedBox(height: 5,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -426,22 +428,27 @@ getCart() async
 
               // cartItem.prod_price = (double.parse(cartItem.prod_price) + (double.parse(cartItem.prod_price)/quantityItemList[index])).toString();
 
-           if(!isDeletingCart){
-             quantityItemList[index]++;
-             itemCount++;
+              if(int.parse(cartItem.stock_qty)>quantityItemList[index]) {
+                if (!isDeletingCart) {
+                  quantityItemList[index]++;
+                  itemCount++;
 
-            // grandTotal = grandTotal + double.parse(cartItem.prod_price);
-             cartTotal = 0.0;
-             for(int i=0 ; i<cartList.length ; i++){
-               cartTotal = cartTotal + (quantityItemList[i] * double.parse(cartList[i].prod_price));
-             };
+                  // grandTotal = grandTotal + double.parse(cartItem.prod_price);
+                  cartTotal = 0.0;
+                  for (int i = 0; i < cartList.length; i++) {
+                    cartTotal = cartTotal + (quantityItemList[i] *
+                        double.parse(cartList[i].prod_price));
+                  };
 
-             totalAmount = cartTotal + deliveryCharge;
-             setState(() {
-             });
+                  totalAmount = cartTotal + deliveryCharge;
+                  setState(() {});
 
-             await updateMyCart();
-           }
+                  await updateMyCart();
+                }
+              }
+              else{
+                Fluttertoast.showToast(msg: "No more stock available!");
+              }
                 // setState(() {
                 // });
 //              }

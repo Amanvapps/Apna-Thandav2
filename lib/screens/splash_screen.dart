@@ -47,13 +47,15 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     else
     {
-      await getBlock();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String userName = prefs.getString('userName');
-      String email = prefs.getString('userEmailId');
+      bool blocked = await getBlock();
+      if(!blocked){
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String userName = prefs.getString('userName');
+        String email = prefs.getString('userEmailId');
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => MainScreen(userName , email , "no")));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => MainScreen(userName , email , "no")));
+      }
     }
 
   }
@@ -66,9 +68,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if(isBlocked){
       Fluttertoast.showToast(msg: "User blocked!");
+      return true;
       // Navigator.of(context).pushReplacement(MaterialPageRoute(
       //     builder: (BuildContext context) => MainScreen(userName , email , "no")));
     }
+
+    return false;
 
   }
 
