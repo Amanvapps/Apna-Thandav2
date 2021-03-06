@@ -604,10 +604,13 @@ class _UpdatedCartScreenState extends State<UpdatedCartScreen> {
           items: areaList.map((var value) {
             return new DropdownMenuItem(
               value: value,
-              child: new Text(value),
+              child: Container(
+                  width : MediaQuery.of(context).size.width/1.5
+                  ,child: new Text(value)),
             );
           }).toList(),
-          hint: Text((selectedArea == null) ? "  Please choose a location" : "  ${selectedArea}" , style: TextStyle(fontSize: 13),),
+          hint: Container(
+              child: Text((selectedArea == null) ? "  Please choose a location" : "  ${selectedArea}" , style: TextStyle(fontSize: 13),)),
           onChanged: (value1) async {
             selectedArea = value1;
             await Storage.setArea(value1);

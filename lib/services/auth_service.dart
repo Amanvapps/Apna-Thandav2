@@ -61,6 +61,7 @@ class AuthService
     await prefs.setString('userLandmark', user.landmark);
     await prefs.setString('userPincode', user.pincode);
     await prefs.setString('userState', user.state);
+    await prefs.setString('userPassword', user.password);
   }
 
   static Future<bool> isAuthenticated(BuildContext context) async {
@@ -141,6 +142,24 @@ class AuthService
   }
 
 
+  static changePassword(id , pass) async
+  {
+    // print(email);
+    var response = await RequestHandler.GET(ApiConstants.CHANGE_PASSWORD , {
+      "token" : TOKEN,
+      "user_sr" : id,
+      "password" : pass
+    });
+
+    print(response);
+
+    if(response["status"] == "1")
+      return true;
+    else
+      return false;
+  }
+
+
   static requestOtp(mobb) async{
     print(mobb);
     var response = await RequestHandler.GET(ApiConstants.REQUEST_OTP , {
@@ -162,6 +181,22 @@ class AuthService
       return response["data"][0]["otp_value"];
     }
 
+  }
+
+  static isAlert(userId) async{
+    var res = await RequestHandler.GET(ApiConstants.CHECK_BLOCK , {
+      "token" : TOKEN ,
+      "user_sr" : userId
+    });
+
+    print("++++++++++++++++++++++++++++++++");
+    print(res.toString());
+    if(res["status"]=="1"){
+      if(res["data"][0]["isProductAlert"] == "0"){
+        return false;
+      }
+    }
+    return true;
   }
 
   static isBlocked(userId) async{

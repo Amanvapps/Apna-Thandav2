@@ -18,6 +18,7 @@ class User
   String apiKey;
   String apiToken;
   String block_status;
+  String password;
 
 
   User(obj)
@@ -41,6 +42,7 @@ class User
     this.cart_items = obj["cart_items"];
     this.wishlist_items = obj["wishlist_items"];
     this.block_status = obj["block_status"];
+    this.password = obj['password'];
   }
 
 

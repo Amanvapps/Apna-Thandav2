@@ -619,6 +619,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       bool res = await UserService.updateProfile(userId, text, 4);
 
         if(res){
+          await prefs.setString('userAddress', text);
 
           await getProfile();
 
@@ -647,6 +648,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if(res){
 
+        await prefs.setString('userEmailId', text);
         await getProfile();
 
       }
@@ -675,6 +677,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if(res){
 
+        await prefs.setString('userName', text);
         await getProfile();
 
       }
@@ -703,6 +706,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       bool res = await UserService.updateProfile(userId, text, 2);
 
       if(res){
+        await prefs.setString('userMobile', text);
 
         await getProfile();
 

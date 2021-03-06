@@ -4,6 +4,7 @@ import 'package:ecommerceapp/pages/search_page.dart';
 import 'package:ecommerceapp/pages/transaction_history_page.dart';
 import 'package:ecommerceapp/pages/wishlist_page.dart';
 import 'package:ecommerceapp/screens/alert_screen.dart';
+import 'package:ecommerceapp/services/auth_service.dart';
 import 'package:ecommerceapp/services/product_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,12 +65,15 @@ class _MainScreenState extends State<MainScreen> {
       String userId = prefs.getString('userId');
 
 
-      var res = await ProductService.getProductAlert(userId);
-      if(res!=null){
+      bool res = await AuthService.isAlert(userId);
+      if(res){
         isAlert = true;
-        setState(() {
-        });
       }
+      else{
+        isAlert = false;
+      }
+      setState(() {
+      });
 
     })()
 

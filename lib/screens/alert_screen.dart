@@ -77,11 +77,13 @@ class _AlertScreenState extends State<AlertScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: (isLoading) ? Loader.getListLoader(context):
-        ListView.builder(
+        (productList!=null)? ListView.builder(
             itemCount: productList.length,
             itemBuilder: (BuildContext ctx , int index){
           return wishlistCard(productList[index]);
-        }),
+        }) : Center(
+          child: Text('No new items!'),
+        ),
       ),
     );
   }

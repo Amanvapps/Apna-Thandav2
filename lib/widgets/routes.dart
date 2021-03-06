@@ -1,6 +1,6 @@
 import 'package:ecommerceapp/pages/transaction_history_page.dart';
 import 'package:ecommerceapp/screens/about_us_screen.dart';
-import 'package:ecommerceapp/screens/follow_us_screen.dart';
+import 'package:ecommerceapp/screens/change_password_screen.dart';
 import 'package:ecommerceapp/screens/main_screen.dart';
 import 'package:ecommerceapp/screens/privacy_policy_screen.dart';
 import 'package:ecommerceapp/screens/profile_screen.dart';
@@ -22,20 +22,6 @@ class Routes {
       }
     }
 
-    _showDialog() async {
-      await showDialog<String>(
-        context: mainCtx,
-        child: new AlertDialog(
-          contentPadding: const EdgeInsets.all(16.0),
-          content: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10)
-              ),
-              height: 300,
-              child: FollowUsScreen(mainCtx)),
-        ),
-      );
-    }
 
 
     var settingsTab = ListTile(
@@ -75,6 +61,17 @@ class Routes {
       },
     );
 
+    var passwordTab = ListTile(
+      title: Text("Change Password"),
+      leading: Icon(Icons.visibility),
+      onTap: () {
+        Navigator.push(
+          mainCtx,
+          MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
+        );
+      },
+    );
+
     var feedbackTab = ListTile(
       title: Text("Feedback"),
       leading: Icon(Icons.rate_review),
@@ -102,14 +99,6 @@ class Routes {
       },
     );
 
-    var followUsTab = ListTile(
-      title: Text("Follow Us"),
-      leading: Icon(Icons.share),
-      onTap: () {
-        _showDialog();
-      },
-    );
-
 
 
 
@@ -119,7 +108,8 @@ class Routes {
       policyTab,
       historyTab,
       aboutUs,
-      feedbackTab
+      feedbackTab,
+      passwordTab
     ];
 
 
