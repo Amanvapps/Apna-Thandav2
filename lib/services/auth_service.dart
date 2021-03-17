@@ -133,7 +133,7 @@ class AuthService
       "mobb" : email
     });
 
-   // print(response);
+   print(response);
 
     if(response["status"] == "1")
     return true;
