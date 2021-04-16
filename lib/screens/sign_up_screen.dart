@@ -237,7 +237,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
               if(passwordController.text!="" && nameController.text!="" && phoneController.text!="" && addressController.text!=""){
                 sendCode();
-                Fluttertoast.showToast(msg: "Otp sent to mobile");
+                Fluttertoast.showToast(msg: "Otp sent to mobile/email");
                 setState(() {
                   isOtp = true;
                 });
@@ -360,7 +360,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
 
       if(passwordController.text!="" && nameController.text!="" && phoneController.text!="" && addressController.text!=""){
-        var response = await AuthService.requestOtp(phoneController.text);
+        var response = await AuthService.requestOtp(phoneController.text , emailController.text);
         if(response!=null){
           otp = response.toString();
           isOtpVerified = true;

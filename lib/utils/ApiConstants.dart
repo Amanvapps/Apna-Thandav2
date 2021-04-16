@@ -1,6 +1,6 @@
 class ApiConstants
 {
-  static const String URL = "http://techeor.co.in/apnathanda/API/";
+  static const String URL = "https://techeor.co.in/apnathanda/API/";
 
 
   static const String LOGIN = "login.php";

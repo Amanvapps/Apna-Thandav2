@@ -241,8 +241,11 @@ class _ProductScreenState extends State<ProductScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  productItem.prod_name, style: TextStyle(fontSize: 12 , fontWeight: FontWeight.bold , color: Colors.black),),
+                Container(
+                  width: MediaQuery.of(context).size.width/2.5,
+                  child: Text(
+                    productItem.prod_name, style: TextStyle(fontSize: 12 , fontWeight: FontWeight.bold , color: Colors.black),),
+                ),
                 GestureDetector(
                   onTap: () async {
                     await scheduleEvent(productItem);

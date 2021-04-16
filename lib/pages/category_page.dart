@@ -126,12 +126,15 @@ class _MainScreenState extends State<CategoryPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${categoryObject.subcat[index].name}',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: "Lato",
-                            fontStyle: FontStyle.values[0],
-                            fontWeight: FontWeight.bold)),
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.5,
+                      child: Text('${categoryObject.subcat[index].name}',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Lato",
+                              fontStyle: FontStyle.values[0],
+                              fontWeight: FontWeight.bold)),
+                    ),
                     GestureDetector(
                       onTap: () async {
                         await Navigator.push(

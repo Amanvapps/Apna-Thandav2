@@ -10,11 +10,14 @@ class CartService
   static getCartList(String userId) async
   {
 
+    print(ApiConstants.URL + ApiConstants.GET_CART);
+    print(userId);
     var res =  await RequestHandler.GET(ApiConstants.GET_CART , {
       "user_sr" : userId,
       "token" : TOKEN
     });
 
+    print("++++++++++++++++++++++++++++---------------------");
     print(res);
     if(res["status"]=="1" && res["data"]!=null)
     {
@@ -56,6 +59,7 @@ class CartService
       "token" : TOKEN
     });
 
+    print("----" + response.toString());
     if(response["status"]=="1")
     {
       return true;

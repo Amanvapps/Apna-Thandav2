@@ -50,7 +50,7 @@ class AuthService
     await prefs.setString('apiKey', user.apiKey);
     await prefs.setString('apiToken', user.apiToken);
     await prefs.setString('userProfile', user.profile_image);
-    await prefs.setInt('userProfile', user.wishlist_items);
+    // await prefs.setInt('whishlist', user.wishlist_items);
     await prefs.setInt('userCart', user.cart_items);
     await prefs.setString('userRegDate', user.reg_date);
     await prefs.setString('userCity', user.city);
@@ -160,11 +160,12 @@ class AuthService
   }
 
 
-  static requestOtp(mobb) async{
+  static requestOtp(mobb , email) async{
     print(mobb);
     var response = await RequestHandler.GET(ApiConstants.REQUEST_OTP , {
       "token" : TOKEN,
-      "mobb" : mobb
+      "mobb" : mobb,
+      "email" : email
     });
 
     print(response.toString());
